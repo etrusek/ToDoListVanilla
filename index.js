@@ -1,3 +1,6 @@
+//pobranie inputu filtrowania
+const inputFilter = document.querySelector('input.filter')
+
 //Baza zadań
 let baseOfTasks = [
   { id: 0, text: 'Umyć zęby' },
@@ -18,11 +21,9 @@ const deleteTask = (e) => {
     newBaseOfTasks.push({ id, text: task.text });
     id++;
   })
-  console.log(newBaseOfTasks)
   baseOfTasks = newBaseOfTasks;
+  inputFilter.value = "";
   printTasks()
-
-  // console.log()
 }
 
 // Wyświetlanie zadań
@@ -35,6 +36,7 @@ const printTasks = () => {
     const btn = document.createElement('button');
     li.textContent = task.text;
     btn.textContent = 'Usuń';
+    li.classList.add(task.id)
     btn.classList.add(task.id)
     li.appendChild(btn)
     ul.appendChild(li)
@@ -54,7 +56,29 @@ const addTask = e => {
   baseOfTasks[baseOfTasks.length] = { id: baseOfTasks.length, text: task }
   printTasks()
   e.target[0].value = "";
-  console.log(document.querySelector('input.filter').value = '');
+  inputFilter.value = "";
 }
 form.addEventListener('submit', addTask);
 
+//filtrowanie zadań
+
+
+inputFilter.addEventListener('input', () => {
+  if (inputFilter.value === "") {
+    document.querySelectorAll('ul>li').forEach(task => {
+      task.classList.remove('hideFilter')
+    })
+  } else {
+
+    document.querySelectorAll('ul>li').forEach(task => {
+      if (!task.textContent.toLowerCase().includes(inputFilter.value)) {
+        task.classList.add('hideFilter')
+      } else {
+        task.classList.remove('hideFilter')
+      }
+
+    })
+  }
+  // console.log(document.querySelector('input.filter').value);
+
+})
